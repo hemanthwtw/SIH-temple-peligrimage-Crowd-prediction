@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temple Surge Predictor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="w-full max-w-2xl mx-auto p-4">
+        <div class="card">
+            <div class="text-center">
+                <div class="flex justify-between items-center mb-4">
+                     <button id="openCalendarBtn" class="btn btn-calendar text-sm" data-translate-key="festivalCalendar">Festival Calendar 📅</button>
+                    <select id="languageSelector" class="text-xs border border-gray-300 rounded-md p-1">
+                        <option value="en">English</option>
+                        <option value="hi">हिन्दी</option>
+                        <option value="te">తెలుగు</option>
+                        <option value="mr">मराठी</option>
+                        <option value="gu">ગુજરાતી</option>
+                    </select>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-800" data-translate-key="mainTitle">Temple Surge Predictor</h1>
+                <p class="text-gray-600 mt-2" data-translate-key="subTitle">Estimate potential visitor surges at major temples in India.</p>
+            </div>
+
+            <div class="mt-8 space-y-6">
+                <div>
+                    <label for="temple" class="block text-sm font-medium text-gray-700" data-translate-key="selectTempleLabel">Select Temple</label>
+                    <select id="temple" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                        <option value="kashi_vishwanath" data-translate-key="templeKashi">Kashi Vishwanath, Varanasi</option>
+                        <option value="tirumala_tirupati" data-translate-key="templeTirumala">Tirumala Tirupati, Andhra Pradesh</option>
+                        <option value="vaishno_devi" data-translate-key="templeVaishno">Vaishno Devi, Jammu & Kashmir</option>
+                        <option value="golden_temple" data-translate-key="templeGolden">Golden Temple, Amritsar</option>
+                        <option value="jagannath_temple" data-translate-key="templeJagannath">Jagannath Temple, Puri</option>
+                        <option value="annavaram" data-translate-key="templeAnnavaram">Annavaram, Andhra Pradesh</option>
+                        <option value="vijayawada" data-translate-key="templeVijayawada">Kanaka Durga, Vijayawada</option>
+                        <option value="sabarimala" data-translate-key="templeSabarimala">Sabarimala, Kerala</option>
+                        <option value="kamakhya" data-translate-key="templeKamakhya">Kamakhya, Guwahati</option>
+                        <option value="swamimalai" data-translate-key="templeSwamimalai">Swamimalai, Tamil Nadu</option>
+                        <option value="dwarkadhish" data-translate-key="templeDwarkadhish">Dwarkadhish, Dwaraka</option>
+                        <option value="pavagadh" data-translate-key="templePavagadh">Kalika Mata, Pavagadh</option>
+                        <option value="ambaji" data-translate-key="templeAmbaji">Ambaji, Gujarat</option>
+                        <option value="ainavilli" data-translate-key="templeAinavilli">Ainavilli Siddi Vinayaka, Ainavilli</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="date" class="block text-sm font-medium text-gray-700" data-translate-key="selectDateLabel">Select Date</label>
+                    <input type="date" id="date" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                </div>
+
+                <div class="text-center">
+                    <button id="predictBtn" class="btn-predict" data-translate-key="predictButton">Predict Surge</button>
+                </div>
+            </div>
+
+            <div id="loader" class="loader"></div>
+
+            <div id="result" class="result-card">
+                 <!-- Prediction results will be displayed here -->
+            </div>
+        </div>
+        <p class="text-center text-xs text-gray-500 mt-4 px-2" data-translate-key="disclaimer">Disclaimer: This is a prototype using mock data for demonstration purposes. Predictions and advisories are illustrative and not a substitute for official guidance.</p>
+        <p class="text-center text-xs text-gray-600 mt-2 px-2 font-semibold" data-translate-key="solutionInfo">The proposed solution should ensure devotee safety, reduced waiting times, smooth mobility, and improved pilgrimage experience, while being scalable across different temple towns in India.</p>
+    </div>
+
+    <!-- Digital Pass Modal -->
+    <div id="passModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-sm text-center relative">
+            <button id="closePassBtn" class="absolute top-2 right-3 text-gray-500 hover:text-gray-800">&times;</button>
+            <div id="passContent">
+                <!-- Digital Pass will be rendered here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Festival Calendar Modal -->
+    <div id="calendarModal" class="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center p-4 z-50" style="display: none;">
+        <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md relative">
+            <button id="closeCalendarBtn" class="absolute top-2 right-3 text-gray-500 hover:text-gray-800">&times;</button>
+            <div class="flex items-center justify-between mb-4">
+                <button id="prevMonthBtn" class="px-2 py-1 rounded-md bg-gray-200 hover:bg-gray-300">&lt;</button>
+                <h3 id="calendarMonthYear" class="text-lg font-bold"></h3>
+                <button id="nextMonthBtn" class="px-2 py-1 rounded-md bg-gray-200 hover:bg-gray-300">&gt;</button>
+            </div>
+            <div id="calendarGrid" class="calendar-grid text-sm"></div>
+            <div id="festivalDetails" class="mt-4 p-3 bg-fuchsia-50 rounded-lg" style="display: none;">
+                 <h4 id="festivalDetailsTitle" class="font-bold text-fuchsia-800"></h4>
+                 <div id="festivalDetailsContent" class="text-sm text-fuchsia-700 mt-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
