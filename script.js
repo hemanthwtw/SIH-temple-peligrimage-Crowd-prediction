@@ -55,8 +55,7 @@ const translations = {
         loadingText: "Loading...",
         aiFetching: "AI is fetching details...",
          specialFeatures: "Special Features ✨",
-            predictedParking: "Predicted Parking Availability 🅿️", // <-- Add this
-        aiTravelAdvisory: "AI Travel Advisory 💡" 
+         
     },
     hi: {
         mainTitle: "मंदिर सर्ज भविष्यवक्ता",
@@ -291,17 +290,6 @@ languageSelector.addEventListener('change', (event) => {
         renderResultCard(newLang);
     }
 });
-//------
-async function getTrafficPrediction(templeName, surgeLevel, reason, lang) {
-    const langName = {en: 'English', hi: 'Hindi', te: 'Telugu', mr: 'Marathi', gu: 'Gujarati'}[lang];
-    const systemPrompt = `You are an AI traffic analyst. Based on a predicted crowd surge level for an upcoming day at a temple, provide a predictive traffic and parking analysis. Return a JSON object with 'predicted_parking_availability' (a descriptive string like 'Approximately 70-80% of spots are expected to be available') and 'predicted_travel_advisory' (a brief, helpful tip for pilgrims).`;
-    const userQuery = `For a visit to ${templeName} with a predicted surge level of "${surgeLevel}" due to "${reason}", what is the AI-based traffic and parking prediction? Respond in ${langName}.`;
-    const schema = { type: "OBJECT", properties: { predicted_parking_availability: { type: "STRING" }, predicted_travel_advisory: { type: "STRING" } }, required: ["predicted_parking_availability", "predicted_travel_advisory"] };
-    try {
-        const jsonText = await makeGeminiApiCall(userQuery, systemPrompt, schema);
-        return JSON.parse(jsonText);
-    } catch (error) { console.error("Error fetching Traffic Prediction:", error); return null; }
-}
 
 // --- MOCK DATA & AI LOGIC ---
 // --- MOCK DATA & AI LOGIC ---
@@ -796,7 +784,8 @@ function renderResultCard(lang) {
     document.getElementById('smartQueueBtn').addEventListener('click', (e) => handleFeatureClick(e.currentTarget, showSmartQueue, [templeName, dateString, prediction, lang]));
     document.getElementById('liveMonitorBtn').addEventListener('click', (e) => handleFeatureClick(e.currentTarget, showMonitoringDashboard, [templeName, prediction, isLive, lang]));
     document.getElementById('emergencyBtn').addEventListener('click', (e) => handleFeatureClick(e.currentTarget, showEmergencyDashboard, [templeName, prediction.surgeFactor, lang]));
-document.getElementById('trafficBtn').addEventListener('click', (e) => handleFeatureClick(e.currentTarget, showTrafficDashboard, [templeName, prediction, lang]));    document.getElementById('pilgrimBtn').addEventListener('click', (e) => handleFeatureClick(e.currentTarget, showPilgrimPlatform, [templeName, dateString, prediction, lang]));
+    document.getElementById('trafficBtn').addEventListener('click', (e) => handleFeatureClick(e.currentTarget, showTrafficDashboard, [templeName, prediction.surgeFactor, lang]));
+    document.getElementById('pilgrimBtn').addEventListener('click', (e) => handleFeatureClick(e.currentTarget, showPilgrimPlatform, [templeName, dateString, prediction, lang]));
     document.getElementById('accessibilityBtn').addEventListener('click', (e) => handleFeatureClick(e.currentTarget, showAccessibilityInfo, [templeName, prediction, lang]));
     document.getElementById('mapBtn').addEventListener('click', (e) => handleFeatureClick(e.currentTarget, showTempleMap, [selectedTemple, prediction, lang]));
     document.getElementById('weatherBtn').addEventListener('click', (e) => handleFeatureClick(e.currentTarget, showWeatherForecast, [templeName, dateString, lang]));
@@ -1045,29 +1034,31 @@ async function showEmergencyDashboard(templeName, surgeFactor, lang) {
         </div>`;
 }
 
-async function showTrafficDashboard(templeName, prediction, lang) {
+async function showTrafficDashboard(templeName, surgeFactor, lang) {
     cleanupFeatures();
     const featureContent = document.getElementById('feature-content');
     featureContent.innerHTML = `<div class="loader feature-loader"></div>`;
-
-    const trafficPrediction = await getTrafficPrediction(templeName, prediction.surgeLevel, prediction.reason, lang);
-    
-    if (trafficPrediction) {
+    const parkingCapacity = Math.max(0, 100 - Math.floor(surgeFactor * 20));
+    const shuttleWaitTime = Math.floor(surgeFactor * 5);
+    const trafficData = { parking_capacity_percent: parkingCapacity, shuttle_wait_minutes: shuttleWaitTime };
+    const advisory = await getTrafficAdvisory(templeName, trafficData, lang);
+    if (advisory) {
         featureContent.innerHTML = `
-        <div class="p-4 bg-amber-50 rounded-lg border border-amber-200 text-left space-y-4">
-            <div>
-                <h5 class="font-bold text-amber-800">${translations[lang].predictedParking}</h5>
-                <p class="text-sm text-amber-700 mt-1">${trafficPrediction.predicted_parking_availability}</p>
+        <div class="p-4 bg-amber-50 rounded-lg border border-amber-200">
+            <h4 class="text-lg font-bold text-center text-amber-800 mb-4">${lang === 'hi' ? 'यातायात और गतिशीलता डैशबोर्ड' : 'Traffic & Mobility Dashboard'}</h4>
+            <div class="grid grid-cols-2 gap-4 text-center">
+                <div><p class="text-sm text-amber-700">${lang === 'hi' ? 'पार्किंग उपलब्धता' : 'Parking Availability'}</p><p class="text-3xl font-bold text-amber-800">${parkingCapacity}%</p></div>
+                <div><p class="text-sm text-amber-700">${lang === 'hi' ? 'शटल प्रतीक्षा समय' : 'Shuttle Wait Time'}</p><p class="text-3xl font-bold text-amber-800">~${shuttleWaitTime} <span class="text-lg">${lang === 'hi' ? 'मिनट' : 'min'}</span></p></div>
             </div>
-            <div>
-                <h5 class="font-bold text-amber-800">${translations[lang].aiTravelAdvisory}</h5>
-                <p class="text-sm text-amber-700 mt-1">${trafficPrediction.predicted_travel_advisory}</p>
+             <div class="mt-4 p-3 bg-amber-100 rounded-lg">
+                <h5 class="font-bold text-amber-900">${lang === 'hi' ? 'एआई-जनरेटेड सलाह:' : 'AI-Generated Advisory:'}</h5>
+                <p class="text-sm text-amber-800 mt-1"><strong>${lang === 'hi' ? 'पार्किंग:' : 'Parking:'}</strong> ${advisory.parking_status}</p>
+                <p class="text-sm text-amber-800 mt-1"><strong>${lang === 'hi' ? 'यात्रा टिप:' : 'Travel Tip:'}</strong> ${advisory.travel_tip}</p>
             </div>
         </div>`;
-    } else {
-        featureContent.innerHTML = `<p class="text-center text-red-500">${lang === 'hi' ? 'यातायात पूर्वानुमान प्राप्त नहीं हो सका।' : 'Could not retrieve traffic forecast.'}</p>`;
-    }
+    } else { featureContent.innerHTML = `<p class="text-center text-red-500">${lang === 'hi' ? 'यातायात की जानकारी प्राप्त नहीं हो सकी।' : 'Could not retrieve traffic information.'}</p>`; }
 }
+
 async function showPilgrimPlatform(templeName, dateString, prediction, lang) {
     cleanupFeatures();
     const featureContent = document.getElementById('feature-content');
