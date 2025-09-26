@@ -4,7 +4,9 @@ const GEMINI_API_KEY = "AIzaSyDHGQPrXJLH4rNItDNgiXPro3GjZPyr0Bc";
 
 
 // --- MULTILINGUAL SUPPORT ---
+
 const translations = {
+    
     en: {
         mainTitle: "Temple Surge Predictor",
         subTitle: "Estimate potential visitor surges at major temples in India.",
@@ -49,7 +51,10 @@ const translations = {
         zoneExit: "Exit Path",
         dayNames: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
         monthNames: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
-        loadingText: "Loading..."
+        loadingText: "Loading...",
+        loadingText: "Loading...",
+        aiFetching: "AI is fetching details...",
+         specialFeatures: "Special Features ✨"
     },
     hi: {
         mainTitle: "मंदिर सर्ज भविष्यवक्ता",
@@ -95,7 +100,10 @@ const translations = {
         zoneExit: "निकास पथ",
         dayNames: ["रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि"],
         monthNames: ["जनवरी", "फरवरी", "मार्च", "अप्रैल", "मई", "जून", "जुलाई", "अगस्त", "सितंबर", "अक्टूबर", "नवंबर", "दिसंबर"],
-        loadingText: "लोड हो रहा है..."
+        loadingText: "लोड हो रहा है...",
+         loadingText: "लोड हो रहा है...",
+        aiFetching: "एआई विवरण प्राप्त कर रहा है...",
+         specialFeatures: "विशेष सुविधाएँ ✨"
     },
     te: {
         mainTitle: "ఆలయ రద్దీ అంచనా",
@@ -141,7 +149,10 @@ const translations = {
         zoneExit: "నిష్క్రమణ మార్గం",
         dayNames: ["ఆది", "సోమ", "మంగళ", "బుధ", "గురు", "శుక్ర", "శని"],
         monthNames: ["జనవరి", "ఫిబ్రవరి", "మార్చి", "ఏప్రిల్", "మే", "జూన్", "జూలై", "ఆగస్టు", "సెప్టెంబర్", "అక్టోబర్", "నవంబర్", "డిసెంబర్"],
-        loadingText: "లోడ్ అవుతోంది..."
+        loadingText: "లోడ్ అవుతోంది...",
+        loadingText: "లోడ్ అవుతోంది...",
+        aiFetching: "AI వివరాలను పొందుతోంది..." ,
+        specialFeatures: "ప్రత్యేక ఫీచర్లు ✨"
     },
     mr: {
         mainTitle: "मंदिर गर्दी अंदाज",
@@ -187,7 +198,10 @@ const translations = {
         zoneExit: "बाहेर जाण्याचा मार्ग",
         dayNames: ["रवि", "सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि"],
         monthNames: ["जानेवारी", "फेब्रुवारी", "मार्च", "एप्रिल", "मे", "जून", "जुलै", "ऑगस्ट", "सप्टेंबर", "ऑक्टोबर", "नोव्हेंबर", "डिसेंबर"],
-        loadingText: "लोड होत आहे..."
+        loadingText: "लोड होत आहे...",
+         loadingText: "लोड होत आहे...",
+        aiFetching: "एआय तपशील मिळवत आहे...",
+         specialFeatures: "विशेष वैशिष्ट्ये ✨"
     },
     gu: {
         mainTitle: "મંદિર ભીડ આગાહી",
@@ -233,7 +247,10 @@ const translations = {
         zoneExit: "બહાર નીકળવાનો માર્ગ",
         dayNames: ["રવિ", "સોમ", "મંગળ", "બુધ", "ગુરુ", "શુક્ર", "શનિ"],
         monthNames: ["જાન્યુઆરી", "ફેબ્રુઆરી", "માર્ચ", "એપ્રિલ", "મે", "જૂન", "જુલાઈ", "ઑગસ્ટ", "સપ્ટેમ્બર", "ઑક્ટોબર", "નવેમ્બર", "ડિસેમ્બર"],
-        loadingText: "લોડ કરી રહ્યું છે..."
+        loadingText: "લોડ કરી રહ્યું છે...",
+         loadingText: "લોડ કરી રહ્યું છે...",
+        aiFetching: "AI વિગતો મેળવી રહ્યું છે...",
+          specialFeatures: "ખાસ સુવિધાઓ ✨"
     }
 };
 
@@ -266,19 +283,71 @@ languageSelector.addEventListener('change', (event) => {
 });
 
 // --- MOCK DATA & AI LOGIC ---
+// --- MOCK DATA & AI LOGIC ---
 const festivalSurgeFactors = {
-    "2025-03-14": { factor: 3.5, reason: "Holi" },
-    "2025-10-21": { factor: 4.5, reason: "Diwali" },
-    "2025-10-22": { factor: 4.2, reason: "Diwali" },
-    "2025-09-22": { factor: 3.0, reason: "Navratri Start" },
-    "2025-10-02": { factor: 3.2, reason: "Dussehra / Navratri End" },
-    "2025-08-16": { factor: 2.8, reason: "Janmashtami" },
-    "2025-02-26": { factor: 3.8, reason: "Maha Shivratri" },
+    // January 2025
+    "2025-01-01": { factor: 2.2, reason: "New Year's Day" },
+    "2025-01-13": { factor: 2.5, reason: "Lohri" },
+    "2025-01-14": { factor: 3.8, reason: "Makar Sankranti / Pongal" },
     "2025-01-26": { factor: 2.0, reason: "Republic Day" },
+    "2025-01-29": { factor: 2.8, reason: "Vasant Panchami" },
+
+    // February 2025
+    "2025-02-26": { factor: 4.2, reason: "Maha Shivratri" },
+
+    // March 2025
+    "2025-03-14": { factor: 4.0, reason: "Holi" },
+    "2025-03-15": { factor: 3.5, reason: "Holika Dahan / Day after Holi" },
+    "2025-03-29": { factor: 3.6, reason: "Ugadi / Gudi Padwa" },
+
+    // April 2025
+    "2025-04-06": { factor: 3.5, reason: "Rama Navami" },
+    "2025-04-08": { factor: 3.6, reason: "Hanuman Jayanti" }, // <-- New
+    "2025-04-14": { factor: 3.2, reason: "Ambedkar Jayanti / Vaisakhi / Tamil New Year" },
+    "2025-04-17": { factor: 2.5, reason: "Mahavir Jayanti" },
+    "2025-04-18": { factor: 2.3, reason: "Good Friday" }, // <-- New
+    "2025-04-21": { factor: 4.0, reason: "Eid al-Fitr" },
+
+    // May 2025
+    "2025-05-01": { factor: 1.8, reason: "May Day / Labour Day" },
+    "2025-05-05": { factor: 2.6, reason: "Buddha Purnima" },
+
+    // June 2025
+    "2025-06-27": { factor: 5.0, reason: "Puri Rath Yatra", temple: "jagannath_temple" },
+    "2025-06-29": { factor: 3.9, reason: "Bakrid / Eid al-Adha" },
+    
+    // July 2025
+    "2025-07-17": { factor: 2.0, reason: "Muharram" },
+
+    // August 2025
+    "2025-08-09": { factor: 2.8, reason: "Naga Panchami" },
     "2025-08-15": { factor: 2.2, reason: "Independence Day" },
+    "2025-08-19": { factor: 3.5, reason: "Raksha Bandhan" },
+    "2025-08-26": { factor: 3.8, reason: "Krishna Janmashtami" },
+
+    // September 2025
+    "2025-09-07": { factor: 4.2, reason: "Ganesh Chaturthi" },
+    "2025-09-17": { factor: 4.3, reason: "Ganesh Visarjan / Onam" }, // <-- Updated
+    "2025-09-22": { factor: 3.0, reason: "Navratri Start" },
+    "2025-09-28": { factor: 3.1, reason: "Saraswati Puja (Navratri)" },
+    "2025-09-29": { factor: 3.4, reason: "Durga Ashtami (Navratri)" },
+    "2025-09-30": { factor: 3.5, reason: "Maha Navami (Navratri)" },
+
+    // October 2025
+    "2025-10-01": { factor: 4.0, reason: "Dussehra / Vijayadashami" },
     "2025-10-02": { factor: 2.5, reason: "Gandhi Jayanti" },
-    "2025-12-25": { factor: 2.1, reason: "Christmas / Holiday Season" },
-    "2025-06-27": { factor: 5.0, reason: "Jagannath Rath Yatra", temple: "jagannath_temple" }
+    "2025-10-19": { factor: 2.7, reason: "Karwa Chauth" },
+    "2025-10-29": { factor: 3.8, reason: "Dhanteras" },
+    "2025-10-30": { factor: 4.0, reason: "Choti Diwali" },
+    "2025-10-31": { factor: 4.8, reason: "Diwali / Lakshmi Puja" },
+
+    // November 2025
+    "2025-11-01": { factor: 3.7, reason: "Govardhan Puja" },
+    "2025-11-02": { factor: 3.5, reason: "Bhai Dooj" },
+    "2025-11-15": { factor: 3.6, reason: "Guru Nanak Jayanti" },
+
+    // December 2025
+    "2025-12-25": { factor: 2.9, reason: "Christmas Day" }
 };
 
 const templeData = {
@@ -685,16 +754,19 @@ function renderResultCard(lang) {
             <p class="text-lg" >${translations[lang].predictedSurgeLevel}:</p>
             <p class="text-4xl ${prediction.surgeColor}">${prediction.surgeLevel}</p>
         </div>
-        <div id="feature-buttons" class="mt-6 grid grid-cols-3 gap-3 text-center">
-            <button id="advisoryBtn" class="btn btn-secondary text-sm">${translations[lang].tripAdvisory}</button>
-            <button id="smartQueueBtn" class="btn btn-tertiary text-sm">${translations[lang].smartQueue}</button>
-            <button id="liveMonitorBtn" class="btn btn-quaternary text-sm">${translations[lang].monitoring}</button>
-            <button id="emergencyBtn" class="btn btn-emergency text-sm">${translations[lang].emergency}</button>
-            <button id="trafficBtn" class="btn btn-traffic text-sm">${translations[lang].traffic}</button>
-            <button id="pilgrimBtn" class="btn btn-info text-sm">${translations[lang].pilgrimInfo}</button>
-            <button id="accessibilityBtn" class="btn btn-accessibility text-sm">${translations[lang].accessibility}</button>
-            <button id="mapBtn" class="btn btn-map text-sm">${translations[lang].templeMap}</button>
-            <button id="weatherBtn" class="btn btn-weather text-sm">${translations[lang].weather}</button>
+
+        <h4 class="text-center mt-6 font-semibold text-gray-700">${translations[lang].specialFeatures}</h4>
+
+        <div id="feature-buttons" class="mt-3 grid grid-cols-3 gap-3 text-center">
+            <button id="advisoryBtn" class="btn feature-btn btn-secondary text-sm">${translations[lang].tripAdvisory}</button>
+            <button id="smartQueueBtn" class="btn feature-btn btn-tertiary text-sm">${translations[lang].smartQueue}</button>
+            <button id="liveMonitorBtn" class="btn feature-btn btn-quaternary text-sm">${translations[lang].monitoring}</button>
+            <button id="emergencyBtn" class="btn feature-btn btn-emergency text-sm">${translations[lang].emergency}</button>
+            <button id="trafficBtn" class="btn feature-btn btn-traffic text-sm">${translations[lang].traffic}</button>
+            <button id="pilgrimBtn" class="btn feature-btn btn-info text-sm">${translations[lang].pilgrimInfo}</button>
+            <button id="accessibilityBtn" class="btn feature-btn btn-accessibility text-sm">${translations[lang].accessibility}</button>
+            <button id="mapBtn" class="btn feature-btn btn-map text-sm">${translations[lang].templeMap}</button>
+            <button id="weatherBtn" class="btn feature-btn btn-weather text-sm">${translations[lang].weather}</button>
         </div>
         <div id="feature-content" class="mt-4"></div>
     `;
@@ -709,7 +781,6 @@ function renderResultCard(lang) {
     document.getElementById('mapBtn').addEventListener('click', (e) => handleFeatureClick(e.currentTarget, showTempleMap, [selectedTemple, prediction, lang]));
     document.getElementById('weatherBtn').addEventListener('click', (e) => handleFeatureClick(e.currentTarget, showWeatherForecast, [templeName, dateString, lang]));
 }
-
 
 predictBtn.addEventListener('click', () => {
     cleanupFeatures();
@@ -1156,10 +1227,21 @@ function renderCalendar(year, month, lang) {
             dayEl.dataset.date = dateStr;
             dayEl.addEventListener('click', async () => {
                 const festivalName = dayEl.dataset.festival;
+                const currentLang = languageSelector.value; // Get current language
                 festivalDetailsTitle.textContent = festivalName;
-                festivalDetailsContent.innerHTML = `<div class="loader feature-loader"></div>`;
+                
+                // --- THIS IS THE MODIFIED PART ---
+                // Show the new loading message with a spinner
+                festivalDetailsContent.innerHTML = `
+                    <div class="flex items-center justify-center p-2 text-gray-600">
+                        <div class="loader feature-loader" style="width: 20px; height: 20px; border-top-color: #4f46e5; margin: 0 0.5rem 0 0;"></div>
+                        <span>${translations[currentLang].aiFetching}</span>
+                    </div>
+                `;
+                // --- END OF MODIFICATION ---
+                
                 festivalDetailsDiv.style.display = 'block';
-                const details = await getFestivalDetails(festivalName, lang);
+                const details = await getFestivalDetails(festivalName, currentLang);
                 festivalDetailsContent.innerHTML = details;
             });
         }
@@ -1211,3 +1293,74 @@ templeSelect.addEventListener('change', updateBackground);
 // Initial setup on page load
 translateUI(languageSelector.value);
 updateBackground();
+
+// --- CHATBOT GEMINI AI INTEGRATION ---
+document.addEventListener('DOMContentLoaded', function() {
+    const chatbotBtn = document.getElementById('chatbotBtn');
+    const chatbotWindow = document.getElementById('chatbotWindow');
+    const closeChatbotBtn = document.getElementById('closeChatbotBtn');
+    const chatbotForm = document.getElementById('chatbotForm');
+    const chatbotInput = document.getElementById('chatbotInput');
+    const chatbotMessages = document.getElementById('chatbotMessages');
+
+    if (!chatbotBtn || !chatbotWindow) return;
+
+    chatbotBtn.onclick = function(e) {
+        e.stopPropagation();
+        chatbotWindow.style.display = 'flex';
+        chatbotInput.focus();
+    };
+    closeChatbotBtn.onclick = function(e) {
+        e.stopPropagation();
+        chatbotWindow.style.display = 'none';
+    };
+
+    // Close chatbot when clicking outside
+    document.addEventListener('mousedown', function(e) {
+        if (
+            chatbotWindow.style.display === 'flex' &&
+            !chatbotWindow.contains(e.target) &&
+            e.target !== chatbotBtn
+        ) {
+            chatbotWindow.style.display = 'none';
+        }
+    });
+
+    chatbotForm.onsubmit = async function(e) {
+        e.preventDefault();
+        if (chatbotWindow.style.display !== 'flex') return;
+        const userMsg = chatbotInput.value.trim();
+        if (!userMsg) return;
+        chatbotMessages.innerHTML += `<div class="text-right mb-2"><span class="inline-block bg-sky-100 text-gray-800 px-2 py-1 rounded-lg text-sm">${userMsg}</span></div>`;
+        chatbotInput.value = '';
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+        // Show loading
+        chatbotMessages.innerHTML += `<div id="botLoading" class="mb-2 text-xs text-gray-400">Temple AI Bot is typing...</div>`;
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+
+        // Gemini API call
+        try {
+            const systemPrompt = "You are Temple AI Bot, a helpful assistant for temple surge prediction, Indian festivals, and temple information. Answer user questions in a concise, friendly, and practical way.";
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`;
+            const payload = {
+                contents: [{ parts: [{ text: userMsg }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] }
+            };
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const result = await response.json();
+            document.getElementById('botLoading').remove();
+            let botReply = result?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "Sorry, I couldn't get a response from the AI.";
+            chatbotMessages.innerHTML += `<div class="mb-2"><span class="inline-block bg-sky-200 text-gray-900 px-2 py-1 rounded-lg text-sm">Temple AI Bot: ${botReply.replace(/\n/g, "<br>")}</span></div>`;
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        } catch (err) {
+            if (document.getElementById('botLoading')) document.getElementById('botLoading').remove();
+            chatbotMessages.innerHTML += `<div class="mb-2"><span class="inline-block bg-red-100 text-red-800 px-2 py-1 rounded-lg text-sm">Temple AI Bot: Sorry, there was an error connecting to the AI.</span></div>`;
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+    };
+});
