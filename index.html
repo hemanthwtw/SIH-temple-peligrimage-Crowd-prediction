@@ -9,11 +9,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  
+  <div id="vanta-bg"></div>
+
     <div class="w-full max-w-2xl mx-auto p-4">
-        <div class="card">
+        <div class="card bg-sky-100/60 backdrop-blur-md shadow-xl rounded-xl">
             <div class="text-center">
-                <div class="flex justify-between items-center mb-4">
-                     <button id="openCalendarBtn" class="btn btn-calendar text-sm" data-translate-key="festivalCalendar">Festival Calendar 📅</button>
+                <div class="flex justify-end items-center mb-4">
                     <select id="languageSelector" class="text-xs border border-gray-300 rounded-md p-1">
                         <option value="en">English</option>
                         <option value="hi">हिन्दी</option>
@@ -28,7 +30,7 @@
 
             <div class="mt-8 space-y-6">
                 <div>
-                    <label for="temple" class="block text-sm font-medium text-gray-700" data-translate-key="selectTempleLabel">Select Temple</label>
+                    <label for="temple" class="block text-sm font-medium text-gray-800 bg-sky-100/50 rounded px-2 py-1" data-translate-key="selectTempleLabel">Select Temple</label>
                     <select id="temple" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                         <option value="kashi_vishwanath" data-translate-key="templeKashi">Kashi Vishwanath, Varanasi</option>
                         <option value="tirumala_tirupati" data-translate-key="templeTirumala">Tirumala Tirupati, Andhra Pradesh</option>
@@ -48,12 +50,21 @@
                 </div>
 
                 <div>
-                    <label for="date" class="block text-sm font-medium text-gray-700" data-translate-key="selectDateLabel">Select Date</label>
+                    <label for="date" class="block text-sm font-medium text-gray-800 bg-sky-100/50 rounded px-2 py-1" data-translate-key="selectDateLabel">Select Date</label>
                     <input type="date" id="date" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 </div>
 
-                <div class="text-center">
-                    <button id="predictBtn" class="btn-predict" data-translate-key="predictButton">Predict Surge</button>
+                <div class="flex justify-between items-center gap-3">
+                    <button id="openCalendarBtn"
+                        class="text-sm px-4 py-2 rounded-md bg-sky-300/70 hover:bg-sky-400/80 transition font-medium shadow"
+                        data-translate-key="festivalCalendar">
+                        Festival Calendar 📅
+                    </button>
+                    <button id="predictBtn"
+                        class="px-4 py-2 rounded-md bg-sky-300/70 hover:bg-sky-400/80 transition font-medium shadow"
+                        data-translate-key="predictButton">
+                        Predict Surge
+                    </button>
                 </div>
             </div>
 
@@ -95,5 +106,40 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta/dist/vanta.clouds2.min.js"></script>
+    <script>
+    VANTA.CLOUDS2({
+      el: "#vanta-bg",
+      mouseControls: true,
+      touchControls: true,
+      gyroControls: false,
+      minHeight: 200.00,
+      minWidth: 200.00,
+      scale: 1.00,
+      texturePath: "https://cdn.jsdelivr.net/npm/vanta/dist/gallery/noise.png"
+    })
+    </script>
+
+    <!-- Chatbot Button -->
+    <button id="chatbotBtn" class="fixed bottom-6 right-6 bg-sky-500 hover:bg-sky-600 text-white rounded-full shadow-lg w-14 h-14 flex items-center justify-center z-50 text-2xl p-0">
+      <img src="img.png" alt="Temple AI Bot" class="w-15 h-15 object-contain" />
+    </button>
+
+    <!-- Chatbot Window -->
+    <div id="chatbotWindow" class="fixed bottom-24 right-6 w-80 max-w-full bg-white rounded-xl shadow-2xl border border-sky-200 z-50 flex flex-col" style="display: none;">
+      <div class="flex items-center justify-between px-4 py-2 bg-sky-500 rounded-t-xl">
+        <span class="text-white font-semibold">TempleBot</span>
+        <button id="closeChatbotBtn" class="text-white text-xl">&times;</button>
+      </div>
+      <div id="chatbotMessages" class="flex-1 p-3 overflow-y-auto" style="max-height: 300px;">
+        <div class="text-xs text-gray-500 mb-2">TempleBot: Hi! How can I help you?</div>
+      </div>
+      <form id="chatbotForm" class="flex border-t border-gray-200">
+        <input id="chatbotInput" type="text" placeholder="Type your question..." class="flex-1 px-3 py-2 text-sm focus:outline-none" autocomplete="off"/>
+        <button type="submit" class="px-3 text-sky-500 font-bold">Send</button>
+      </form>
+    </div>
+
 </body>
 </html>
