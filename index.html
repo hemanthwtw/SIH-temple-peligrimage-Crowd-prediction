@@ -126,6 +126,44 @@
       <img src="img.png" alt="Temple AI Bot" class="w-15 h-15 object-contain" />
     </button>
 
+    <!-- small toast for download confirmation -->
+    <div id="downloadToast" class="download-toast" style="display:none"></div>
+
+    <!-- Interactive Download Button (fixed top-right) -->
+    <a id="downloadBtn" class="download-btn" href="https://cf.admin.appmysite.com/715553/729452/android/builds/1.0.0/ams_android_729452_live.apk?_gl=1*4gu0lw*_ga*ODM1MTczMjMuMTc1OTYzOTE3OQ..*_ga_BWZ5717E0Z*czE3NTk2NDI1OTEkbzIkZzEkdDE3NTk2NDI1OTUkajU2JGwwJGgwJGR4c3NWUzBPcDl6d0IyU3RUVGh5MGw3WFA5akJjM19SOWt3" target="_blank" rel="noopener noreferrer" aria-label="Download App (Android)">
+      <!-- Combined Android robot + download arrow SVG -->
+      <svg width="28" height="28" viewBox="0 0 64 64" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <!-- Android head -->
+        <rect x="12" y="10" width="40" height="28" rx="6" fill="#A4C639"/>
+        <circle cx="22" cy="18" r="2.8" fill="#0b0b0b"/>
+        <circle cx="42" cy="18" r="2.8" fill="#0b0b0b"/>
+        <rect x="28" y="8" width="3" height="6" rx="1.5" transform="rotate(-25 28 8)" fill="#A4C639"/>
+        <rect x="34" y="8" width="3" height="6" rx="1.5" transform="rotate(25 34 8)" fill="#A4C639"/>
+        <!-- Android body -->
+        <rect x="16" y="30" width="32" height="18" rx="3" fill="#A4C639"/>
+        <!-- Download arrow overlay (white) -->
+        <g transform="translate(18,34)">
+          <path d="M14 0 L14 10" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M7 6 L14 13 L21 6" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <rect x="-6" y="16" width="36" height="3" rx="1.5" fill="#ffffff"/>
+        </g>
+      </svg>
+      <span class="download-label">
+        <!-- small inline android glyph next to the label text -->
+        <svg class="android-mini" viewBox="0 0 24 24" width="14" height="14" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <g fill="#A4C639">
+            <rect x="4" y="6" width="16" height="6" rx="2"></rect>
+            <rect x="6" y="12" width="12" height="6" rx="1.5"></rect>
+          </g>
+          <g fill="#000000" opacity="0.9">
+            <circle cx="8.3" cy="8.2" r="0.9"></circle>
+            <circle cx="15.7" cy="8.2" r="0.9"></circle>
+          </g>
+        </svg>
+        <span class="download-label-text" data-translate-key="downloadApp">Download App</span>
+      </span>
+    </a>
+
     <!-- Chatbot Window -->
     <div id="chatbotWindow" class="fixed bottom-24 right-6 w-80 max-w-full bg-white rounded-xl shadow-2xl border border-sky-200 z-50 flex flex-col" style="display: none;">
       <div class="flex items-center justify-between px-4 py-2 bg-sky-500 rounded-t-xl">
