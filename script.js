@@ -2,6 +2,8 @@
 // API Keys are integrated directly into the code as requested.
 const GEMINI_API_KEY = "AIzaSyDHGQPrXJLH4rNItDNgiXPro3GjZPyr0Bc";
 
+// Add download URL constant
+const DOWNLOAD_URL = "https://cf.admin.appmysite.com/715553/729452/android/builds/1.0.0/ams_android_729452_live.apk?_gl=1*4gu0lw*_ga*ODM1MTczMjMuMTc1OTYzOTE3OQ..*_ga_BWZ5717E0Z*czE3NTk2NDI1OTEkbzIkZzEkdDE3NTk2NDI1OTUkajU2JGwwJGgwJGR4c3NWUzBPcDl6d0IyU3RUVGh5MGw3WFA5akJjM19SOWt3";
 
 // --- MULTILINGUAL SUPPORT ---
 
@@ -55,7 +57,7 @@ const translations = {
         loadingText: "Loading...",
         aiFetching: "AI is fetching details...",
          specialFeatures: "Special Features ✨",
-         
+         downloadApp: "Download App",
     },
     hi: {
         mainTitle: "मंदिर सर्ज भविष्यवक्ता",
@@ -1372,4 +1374,36 @@ document.addEventListener('DOMContentLoaded', function() {
             chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
         }
     };
+
+    // Download button behavior
+    const downloadBtn = document.getElementById('downloadBtn');
+    const downloadToast = document.getElementById('downloadToast');
+
+    function showToast(message, timeout = 2500) {
+        if (!downloadToast) return;
+        downloadToast.innerText = message;
+        downloadToast.classList.add('show');
+        downloadToast.style.display = 'block';
+        setTimeout(() => {
+            downloadToast.classList.remove('show');
+            // small delay to match transition
+            setTimeout(() => downloadToast.style.display = 'none', 220);
+        }, timeout);
+    }
+
+    if (downloadBtn) {
+        // Ensure anchor points to the canonical URL (in case DOM was modified)
+        downloadBtn.setAttribute('href', DOWNLOAD_URL);
+
+        downloadBtn.addEventListener('click', function (e) {
+            // let the anchor navigate; also open in new tab for reliability
+            try { window.open(DOWNLOAD_URL, '_blank', 'noopener'); } catch (err) {}
+            const lang = languageSelector ? languageSelector.value : 'en';
+            const msg = translations[lang]?.downloadApp ? `${translations[lang].downloadApp} - Starting...` : 'Download starting...';
+            showToast(msg);
+        });
+    }
+
+    // ensure the download label text is translated at load
+    translateUI(languageSelector.value);
 });
