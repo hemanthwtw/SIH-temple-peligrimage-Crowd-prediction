@@ -234,3 +234,112 @@ body::before {
     opacity: 0.7;
     cursor: not-allowed;
 }
+
+/* Download button (fixed top-right) */
+.download-btn {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 60;
+    width: 52px;
+    height: 52px;
+    border-radius: 9999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg,#06b6d4 0%,#3b82f6 100%);
+    box-shadow: 0 8px 28px rgba(59,130,246,0.18), 0 2px 6px rgba(6,182,212,0.12);
+    transition: transform 160ms ease, box-shadow 160ms ease, opacity 160ms ease;
+    cursor: pointer;
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.12);
+    -webkit-tap-highlight-color: transparent;
+    will-change: transform;
+    animation: downloadPulse 2.4s infinite;
+}
+.download-btn:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 12px 36px rgba(59,130,246,0.22); }
+
+/* subtle pulsing glow */
+@keyframes downloadPulse {
+  0% { box-shadow: 0 6px 18px rgba(59,130,246,0.14); }
+  50% { box-shadow: 0 18px 44px rgba(59,130,246,0.22); }
+  100% { box-shadow: 0 6px 18px rgba(59,130,246,0.14); }
+}
+
+.download-btn svg { display: block; }
+
+/* Hover label that appears to the left of the button */
+.download-label {
+    position: absolute;
+    right: calc(100% + 12px);
+    top: 50%;
+    transform: translateY(-50%) translateX(6px);
+    background: rgba(15,23,42,0.95);
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 150ms ease, transform 150ms ease;
+    box-shadow: 0 8px 24px rgba(2,6,23,0.35);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding-left: 6px; /* small spacing from caret edge */
+}
+.download-label .android-mini {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 14px;
+    display: inline-block;
+}
+.download-label .download-label-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1;
+}
+
+/* small left caret */
+.download-label::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    width: 10px;
+    height: 10px;
+    background: rgba(15,23,42,0.95);
+    border-radius: 2px;
+}
+
+/* show on hover or focus */
+.download-btn:hover .download-label,
+.download-btn:focus .download-label {
+    opacity: 1;
+    transform: translateY(-50%) translateX(0);
+}
+
+/* Toast */
+.download-toast {
+    position: fixed;
+    top: 80px;
+    right: 22px;
+    z-index: 70;
+    background: rgba(17,24,39,0.96);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    box-shadow: 0 8px 36px rgba(2,6,23,0.4);
+    transform-origin: top right;
+    opacity: 0;
+    transition: opacity 200ms ease, transform 200ms ease;
+}
+.download-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
